@@ -23,20 +23,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.startButton.isEnabled = true
-        binding.resumeButton.isEnabled = false
-        binding.stopButton.isEnabled = false
+        binding.pauseButton.isEnabled = false
         binding.resetButton.isEnabled = false
 
         binding.startButton.setOnClickListener {
             startTimer()
         }
 
-        binding.stopButton.setOnClickListener {
-            pauseTimer()
-        }
-
-        binding.resumeButton.setOnClickListener {
-            resumeTimer()
+        binding.pauseButton.setOnClickListener {
+            if (isRunning) {
+                pauseTimer()
+            } else if (isPaused) {
+                resumeTimer()
+            }
         }
 
         binding.resetButton.setOnClickListener {
@@ -66,8 +65,8 @@ class MainActivity : AppCompatActivity() {
             handler.post(runnable)
             isRunning = true
             binding.startButton.isEnabled = false
-            binding.resumeButton.isEnabled = false
-            binding.stopButton.isEnabled = true
+            binding.pauseButton.isEnabled = true
+            binding.pauseButton.text = "Pause"
             binding.resetButton.isEnabled = true
         }
     }
@@ -78,9 +77,7 @@ class MainActivity : AppCompatActivity() {
             handler.post(runnable)
             isRunning = true
             isPaused = false
-            binding.startButton.isEnabled = false
-            binding.resumeButton.isEnabled = false
-            binding.stopButton.isEnabled = true
+            binding.pauseButton.text = "Pause"
             binding.resetButton.isEnabled = true
         }
     }
@@ -91,10 +88,7 @@ class MainActivity : AppCompatActivity() {
             handler.removeCallbacks(runnable)
             isRunning = false
             isPaused = true
-            binding.startButton.isEnabled = false
-            binding.resumeButton.isEnabled = true
-            binding.stopButton.isEnabled = false
-            binding.resetButton.isEnabled = true
+            binding.pauseButton.text = "Resume"
         }
     }
 
@@ -105,8 +99,7 @@ class MainActivity : AppCompatActivity() {
         elapsedTime = 0
         updateTimerTextView(0)
         binding.startButton.isEnabled = true
-        binding.resumeButton.isEnabled = false
-        binding.stopButton.isEnabled = false
+        binding.pauseButton.isEnabled = false
         binding.resetButton.isEnabled = false
     }
 }
